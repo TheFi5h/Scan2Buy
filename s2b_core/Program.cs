@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace s2b_core
+namespace Scan2Buy
 {
     static class Program
     {
@@ -17,6 +17,8 @@ namespace s2b_core
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
+
         }
     }
 }

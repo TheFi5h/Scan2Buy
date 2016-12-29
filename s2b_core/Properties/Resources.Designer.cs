@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace s2b_core.Properties
+namespace Scan2Buy.Properties
 {
 
 
