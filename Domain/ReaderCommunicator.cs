@@ -191,16 +191,19 @@ namespace Domain
 
                         foreach (FedmIscTagHandler th in listTagHandler)
                         {
-                            if (th == null) continue;
+                            if (th == null)
+                                continue;
 
-                            var tagHandler = th;
-
-                            tagHandler = _reader.TagSelect(tagHandler, 0);
+                            var tagHandler = _reader.TagSelect(th, 0);
                             Logger.GetInstance().Log("SC: Called TagSelect");
 
-                            if (!(tagHandler is FedmIscTagHandler_ISO15693)) continue;
+                            // Check if the scanned tag is of the correct type
+                            if (!(tagHandler is FedmIscTagHandler_ISO15693))
+                                continue;
 
+                            // Create TagData from tag
                             TagData scannedTag = FormatTagHandlerToTagData((FedmIscTagHandler_ISO15693)tagHandler);
+
 
                             lock (_scannedTags)  // lock object because same list is used as return value in asynchronous main thread
                             {
@@ -236,7 +239,7 @@ namespace Domain
 
         private TagData FormatTagHandlerToTagData(FedmIscTagHandler_ISO15693 tag)
         {
-            return new TagData(tag.GetUid(), tag.ToString());       //TODO ToString stuff right?
+            return new TagData(tag.GetUid(), tag.GetManufacturerName());       //TODO ToString stuff right?
         }
     }
 }
