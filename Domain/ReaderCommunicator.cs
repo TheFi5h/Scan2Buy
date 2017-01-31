@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain;
+using DataAccess;
 using OBID;
 using OBID.TagHandler;
 
-namespace DataAccess
+namespace Domain
 {
     public class ReaderCommunicator : IReaderCommunicator
     {
@@ -25,7 +25,9 @@ namespace DataAccess
 
         public bool Scanning;       // to check from outside if the Communicator is currently scanning for chips
 
+
         public delegate void NewTagScannedEventHandler(TagData tagData);  // delegate to let others now, when a new tag was scanned
+        public event NewTagScannedEventHandler NewTagScanned;
 
         /////////////////////// Methods ///////////////////////
         ///////////////////////////////////////////////////////
@@ -68,7 +70,7 @@ namespace DataAccess
                 }
         }
 
-        // connects to the reader (parameters may be changed to connect to something other than an usb-connected device on another bus than 255)
+        // Connects to the reader (parameters may be changed to connect to something other than an usb-connected device on another bus than 255)
         public bool Connect()
         {
             if (_reader.Connected)      // reader already connected
@@ -107,7 +109,7 @@ namespace DataAccess
  
         }
 
-        // disconnects the reader (needs to be down for the internals procedures of the dll)
+        // Disconnects the reader (needs to be down for the internals procedures of the dll)
         public bool Disconnect()
         {
             if (_reader.Connected) // check if the connection could be established
@@ -130,25 +132,44 @@ namespace DataAccess
 
         }
 
-        // activates the task which is constantly asking the reader for new scanned tags
+        // Activates the task which is constantly asking the reader for new scanned tags
         public void ActivateScan()
         {
+            if (Scanning) return;   // Check if the task is already running
+
             Scanning = true;
 
-            _taskScanner = new Task(Scanner);    // starts a new task which constantly searches for new tags in the field
+            // starts a new task which constantly searches for new tags in the field
+            _taskScanner = new Task(Scanner);
             _taskScanner.Start();
+
             Logger.GetInstance().Log("RC: Started Scanner-Task");
         }
 
-        // deactivates the task which is constantly asking the reader for new scanned tags
+        // Deactivates the task which is constantly asking the reader for new scanned tags
         public void DeactivateScan()
         {
+            if (!Scanning) return;      // Check if the task isn't running
+
             Scanning = false;       // "order" Task to stop
             Logger.GetInstance().Log("RC: Deactivating Scanner-Task");
             _taskScanner.Wait();     // wait until it finally finishes, to not get several tasks running when deactivating and activating fast enough after each other
             Logger.GetInstance().Log("RC: Scanner-Task deactivated");
+        }
 
+        // returns a dictionary of the scanned tags until this moment since the last time calling the method or starting the scanner
+        public IList<TagData> GetScannedTags()
+        {
+            List<TagData> returnList;
 
+            lock (_scannedTags)  // lock because it is used by the asynchronous task taskScanner
+            {
+                returnList = new List<TagData>(_scannedTags);
+
+                _scannedTags.Clear(); // clear object-local Dictionary
+            }
+
+            return returnList;
         }
 
         /* tasked method which searches for new tasks in the field of the reader
@@ -177,7 +198,7 @@ namespace DataAccess
                             tagHandler = _reader.TagSelect(tagHandler, 0);
                             Logger.GetInstance().Log("SC: Called TagSelect");
 
-                            if (!( tagHandler is FedmIscTagHandler_ISO15693 )) continue;
+                            if (!(tagHandler is FedmIscTagHandler_ISO15693)) continue;
 
                             TagData scannedTag = FormatTagHandlerToTagData((FedmIscTagHandler_ISO15693)tagHandler);
 
@@ -186,6 +207,7 @@ namespace DataAccess
                                 if (!_scannedTags.Contains(scannedTag))
                                 {
                                     _scannedTags.Add(scannedTag);       // info about tag gets saved into list if its not already inside
+                                    OnNewTagScanned(scannedTag);
                                 }
                             }
                         }
@@ -201,24 +223,15 @@ namespace DataAccess
                 }
                 catch (Exception e)
                 {
-                   Logger.GetInstance().Log("SC: --EXCEPTION caught while scanning: " + e.Message + e.GetType());
+                    Logger.GetInstance().Log("SC: --EXCEPTION caught while scanning: " + e.Message + e.GetType());
                 }
             }
         }
 
-        // returns a dictionary of the scanned tags until this moment since the last time calling the method or starting the scanner
-        public IList<TagData> GetScannedTags()
+        private void OnNewTagScanned(TagData scannedTag)
         {
-            List<TagData> returnList;
-
-            lock (_scannedTags)  // lock because it is used by the asynchronous task taskScanner
-            {
-                returnList = new List<TagData>(_scannedTags);
-
-                _scannedTags.Clear(); // clear object-local Dictionary
-            }
-
-            return returnList;
+            // Trigger event if the handler isnt null (if there are subscribers)
+            NewTagScanned?.Invoke(scannedTag);
         }
 
         private TagData FormatTagHandlerToTagData(FedmIscTagHandler_ISO15693 tag)

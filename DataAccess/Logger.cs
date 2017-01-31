@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace DataAccess
 {
@@ -35,6 +36,7 @@ namespace DataAccess
             _file = new StreamWriter("log.txt", true);      // true means appending of the text
 
             _file.WriteLine($"{DateTime.Now} | {message}");    // uses the current time as a prefix + the given string
+            Debug.WriteLine($"{DateTime.Now} | {message}");
 
             _file.Close();
         }

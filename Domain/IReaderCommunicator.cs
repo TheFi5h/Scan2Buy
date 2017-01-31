@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -7,7 +8,7 @@ namespace Domain
         
         // Connection
         bool Connect();
-
+    
         bool Disconnect();
 
         // Activation
@@ -17,5 +18,7 @@ namespace Domain
 
         // Getting Result
         IList<TagData> GetScannedTags();
+
+        event ReaderCommunicator.NewTagScannedEventHandler NewTagScanned;
     }
 }

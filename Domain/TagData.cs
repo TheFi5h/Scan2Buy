@@ -18,7 +18,6 @@ namespace Domain
             TimeStamp = DateTime.Now;
         }
 
-
         public string Id { get; set; }
 
         public DateTime TimeStamp { get; set; }
