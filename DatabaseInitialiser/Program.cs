@@ -1,9 +1,10 @@
-﻿using System;
-
-class Program
+﻿namespace DatabaseInitialiser
 {
-    static void Main(string[] args)
+    class Program
     {
-        System.Diagnostics.Debug.WriteLine("test");
+        static void Main(string[] args)
+        {
+            System.Diagnostics.Debug.WriteLine("test");
+        }
     }
 }
