@@ -35,7 +35,7 @@ namespace s2b_core_wpf
             LabelPriceVar.Content = _shoppingCart.GetPrice() + "€";
             
             // Update table
-            var entries = _shoppingCart.GetEntries();   // readonly list of all entries in the cart
+            _entries = (ReadOnlyCollection<ShoppingCartEntry>) _shoppingCart.GetEntries();   // readonly list of all entries in the cart
         }
     }
 }

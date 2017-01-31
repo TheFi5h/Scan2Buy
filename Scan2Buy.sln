@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26020.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_App", "s2b_core_wpf\WPF_App.csproj", "{4813E014-295A-43B4-ACBC-CE83BE4E6AAB}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -18,6 +18,22 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{38165F1C-D9A5-45E9-B7AA-784039F35A93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{5E35BEE2-E81C-45CC-8CB3-C7AC94D2A72F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{C7B2AB4B-C76F-4A9E-8BF8-3F5E06AA7342}"
+	ProjectSection(SolutionItems) = preProject
+		References\fecom.dll = References\fecom.dll
+		References\fefu.dll = References\fefu.dll
+		References\feisc.dll = References\feisc.dll
+		References\fetcl.dll = References\fetcl.dll
+		References\fetcp.dll = References\fetcp.dll
+		References\feusb.dll = References\feusb.dll
+		References\libeay32.dll = References\libeay32.dll
+		References\mfc110.dll = References\mfc110.dll
+		References\msvcp110.dll = References\msvcp110.dll
+		References\msvcr110.dll = References\msvcr110.dll
+		References\OBIDISC4NET.dll = References\OBIDISC4NET.dll
+		References\OBIDISC4NETnative.dll = References\OBIDISC4NETnative.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
