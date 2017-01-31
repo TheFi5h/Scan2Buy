@@ -37,5 +37,10 @@ namespace s2b_core_wpf
             // Update table
             _entries = (ReadOnlyCollection<ShoppingCartEntry>) _shoppingCart.GetEntries();   // readonly list of all entries in the cart
         }
+
+        private void buttonExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

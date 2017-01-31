@@ -34,7 +34,7 @@
                     <DropShadowEffect/>
                 </Button.Effect>
             </Button>
-            <Button x:Name="buttonExit" Content="Schließen" HorizontalAlignment="Left" Margin="56,621,0,0" VerticalAlignment="Top" Width="234" Height="42" Grid.Column="1" Click="buttonExit_Click"/>
+            <Button x:Name="buttonExit" Content="X" HorizontalAlignment="Left" Margin="263,10,0,0" VerticalAlignment="Top" Width="27" Height="27" Grid.Column="1" Click="buttonExit_Click"/>
         </Grid>
 
     </Grid>
