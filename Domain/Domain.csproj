@@ -36,6 +36,10 @@
     <Reference Include="OBIDISC4NET">
       <HintPath>..\References\OBIDISC4NET.dll</HintPath>
     </Reference>
+    <Reference Include="OBIDISC4NETnative, Version=0.0.0.0, Culture=neutral, PublicKeyToken=900ed37a7058e4f2, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\OBIDISC4NETnative.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />

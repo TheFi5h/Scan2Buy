@@ -10,9 +10,9 @@ namespace Domain
         public double PricePerUnit { get; private set; }
         public double Price { get; private set; }
 
-        private readonly int _articleNumber;
+        private readonly string _articleNumber;
 
-        public ShoppingCartEntry(string name, int articleNumber, int amount = 0, double pricePerUnit = 0)
+        public ShoppingCartEntry(string name, string articleNumber, int amount = 0, double pricePerUnit = 0)
         {
             Name = name;
             _articleNumber = articleNumber;
@@ -23,7 +23,7 @@ namespace Domain
 
         }
 
-        public int GetArticleNumber()
+        public string GetArticleNumber()
         {
             return _articleNumber;
         }

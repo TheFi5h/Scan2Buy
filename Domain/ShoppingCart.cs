@@ -46,7 +46,7 @@ namespace Domain
             // i.e. db.getEntry(tagData.Id);
 
             string name = "artikel";
-            int articleNumber = Convert.ToInt32(tagData.Id);
+            string articleNumber = tagData.Id;
             int amount = 1;
             double pricePerUnit = 3.98f;
 

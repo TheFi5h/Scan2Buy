@@ -234,7 +234,10 @@ namespace Domain
         private void OnNewTagScanned(TagData scannedTag)
         {
             // Trigger event if the handler isnt null (if there are subscribers)
-            NewTagScanned?.Invoke(scannedTag);
+            if(NewTagScanned != null)
+            {
+                NewTagScanned(scannedTag);
+            }
         }
 
         private TagData FormatTagHandlerToTagData(FedmIscTagHandler_ISO15693 tag)
