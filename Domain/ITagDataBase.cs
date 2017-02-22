@@ -9,9 +9,11 @@ namespace Domain
 {
     interface ITagDataBase
     {
-        void SetUpDb();                                                 // to start the db or initate a link to it maybe add info here
+        void SetUpDataBase();                                           // to create the needed tables when first using the database
+        void Connect();                                                 // to start the db or initate a link to it maybe add info here
+        void Disconnect();                                              // to close the connection to the db
 
-        void SaveLink(TagData tagData, ArticleData articleData);        // to link TagData to a specific article
+        void CreateLink(TagData tagData, ArticleData articleData);        // to link TagData to a specific article
         bool DeleteLink(TagData tagData, ArticleData articleData);      // to delete the set link
 
         ArticleData GetArticleDataByTagData(TagData tagData);           // to get the ArticleData linked to the given TagData
