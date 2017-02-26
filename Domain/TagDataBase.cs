@@ -92,6 +92,11 @@ namespace Domain
             _connection.Dispose();
         }
 
+        public bool IsConnected()
+        {
+            return _hasOpenedConnection;
+        }
+
         public bool CreateLink(TagData tagData, ArticleData articleData)
         {
             // Check if a conenction is open

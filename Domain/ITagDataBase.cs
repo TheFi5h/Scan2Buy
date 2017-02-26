@@ -12,6 +12,7 @@ namespace Domain
         void SetUpDataBase();                                           // to create the needed tables when first using the database
         void Connect();                                                 // to start the db or initate a link to it maybe add info here
         void Disconnect();                                              // to close the connection to the db
+        bool IsConnected();                                             // to check if the connection to the db is established
 
         bool CreateLink(TagData tagData, ArticleData articleData);      // to link TagData to a specific article
         bool DeleteLink(TagData tagData);                               // to delete the set link by the tag id
