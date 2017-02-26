@@ -10,6 +10,7 @@ namespace Domain
         // The list of items in the shoppingCart. Only distinct entries with an amount
         private readonly List<ShoppingCartEntry> _listArticles = new List<ShoppingCartEntry>();
         private readonly IReaderCommunicator _reader = ReaderCommunicator.GetInstance();
+        private readonly ITagDataBase db = new TagDataBase();
 
         public delegate void NewEntryEventHandler(NewEntryEventArgs e);
         public event NewEntryEventHandler OnEntryChanged;
@@ -17,44 +18,49 @@ namespace Domain
         // Using the default Constructor
         public ShoppingCart()
         {
-            // TODO start database for tag/article data
+            // Connect to database
+            db.Connect();
             
+            // Connect to RFID-Reader
             _reader.Connect();
+
+            // Setup event
             _reader.NewTagScanned += HandleNewTag;
         }
 
         ~ShoppingCart()
         {
+            // Disconnect reader
             _reader.Disconnect();
         }
 
         // Starts the reader to search for tags
         public void Start()
         {
+            // Activate the scanner
             _reader.ActivateScan();
         }
 
         public void Stop()
         {
+            // Stop the scanner
             _reader.DeactivateScan();
         }
 
         public void HandleNewTag(TagData tagData)
         {
             // Search for item with id in db
-            // TODO
-            // i.e. db.getEntry(tagData.Id);
+            ArticleData newArticle = db.GetArticleDataByTagData(tagData);   // TODO check what happens on no item found
 
-            string name = "artikel";
-            string articleNumber = tagData.Id;
-            int amount = 1;
-            double pricePerUnit = 3.98f;
+            // Check null
+            if (newArticle == null)
+                return;
 
-           AddToCart(new ShoppingCartEntry(name, articleNumber, amount, pricePerUnit));     // add scanned item to cart
+           AddToCart(new ShoppingCartEntry(newArticle.Name, newArticle.Id, 1, newArticle.Cost));     // add scanned item to cart
         }
 
         // Sums up all prices for the items
-        public double GetPrice()
+        public decimal GetPrice()
         {
             return _listArticles.Sum(item => item.Price);
         }
@@ -128,7 +134,6 @@ namespace Domain
 
         public class NewEntryEventArgs : EventArgs
         {
-            //TODO specify what the subscriber eventually needs
             public enum ShoppingCartAction
             {
                 Add,

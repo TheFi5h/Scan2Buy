@@ -7,43 +7,51 @@ namespace Domain
 
         public string Name { get; private set; }
         public int Amount { get; private set; }
-        public double PricePerUnit { get; private set; }
-        public double Price { get; private set; }
+        public decimal PricePerUnit { get; private set; }
+        public decimal Price { get; private set; }
 
-        private readonly string _articleNumber;
+        private readonly int _articleNumber;
 
-        public ShoppingCartEntry(string name, string articleNumber, int amount = 0, double pricePerUnit = 0)
+        public ShoppingCartEntry(string name, int articleNumber, int amount = 0, decimal pricePerUnit = 0.00M)
         {
             Name = name;
             _articleNumber = articleNumber;
-
             Amount = amount;
             PricePerUnit = pricePerUnit;
             Price = pricePerUnit * amount;
-
         }
 
-        public string GetArticleNumber()
+        // Returns the article number
+        public int GetArticleNumber()
         {
             return _articleNumber;
         }
 
-        // increases amount by 1 and recalculates the price
+        // Increases amount by 1 and recalculates the price
         public void AddOne()
         {
+            // Increase amount
             Amount++;
+
+            // Recalculate price
             Price = Amount * PricePerUnit;
         }
 
-        // reduces amount by 1 and recalculates the price
+        // Reduces amount by 1 and recalculates the price
         public void DeleteOne()
         {
-            //TODO if 0
+            // Check amount
+            if (Amount <= 1)
+                throw new InvalidOperationException("The amount must be > 1 to reduce the amount");
+
+            // Reduce amount
             Amount--;
+            
+            // Recalculate price
             Price = Amount * PricePerUnit;
         }
 
-        // return 0 for equal, a negative integer if the name of the article comes earlier in the alphabet and visa versa
+        // Return 0 for equal, a negative integer if the name of the article comes earlier in the alphabet and visa versa
         public int CompareTo(ShoppingCartEntry other)
         {
             if (_articleNumber == other.GetArticleNumber())     // if the article number is the same the article is the same
