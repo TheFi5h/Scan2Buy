@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using Domain;
 
 namespace s2b_core_wpf
@@ -21,10 +22,17 @@ namespace s2b_core_wpf
             // Initialising own procedures
 
             _shoppingCart = new ShoppingCart();                  // create new shoppingCart
-            DataGridEntries.ItemsSource = _shoppingCart.GetEntries();
-            DataGridEntries.ItemsSource = _entries;
+
+
             DataGridEntries.AutoGenerateColumns = true;         // automatically binds all public properties of shopping cart entry to one column each
             DataGridEntries.IsReadOnly = true;                  // So that the user cant move items 
+            DataGridEntries.CanUserAddRows = false;
+            DataGridEntries.CanUserDeleteRows = false;
+            DataGridEntries.CanUserReorderColumns = false;
+            DataGridEntries.CanUserResizeColumns = false;
+            DataGridEntries.CanUserResizeRows = false;
+            DataGridEntries.CanUserSortColumns = false;
+            DataGridEntries.HeadersVisibility = DataGridHeadersVisibility.All;
             _shoppingCart.OnEntryChanged += ShoppingCartGuard;  // Subscribe to OnEntryChangedEvent
             _shoppingCart.Start();                              // activate Scanning for targets
         }
@@ -43,11 +51,29 @@ namespace s2b_core_wpf
 
             // Update table
             _entries = (ReadOnlyCollection<ShoppingCartEntry>)_shoppingCart.GetEntries();   // readonly list of all entries in the cart
+
+            // Update grid
+            // TODO needed?
+            DataGridEntries.ItemsSource = _entries;
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void DataGridEntries_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // Get items (probably still none)
+            var items = _shoppingCart.GetEntries();
+
+            var grid = sender as DataGrid;
+
+            if (grid != null)
+            {
+                // Set items source
+                grid.ItemsSource = items;
+            }
         }
     }
 }
