@@ -10,7 +10,7 @@ namespace Domain
         // The list of items in the shoppingCart. Only distinct entries with an amount
         private readonly List<ShoppingCartEntry> _listArticles = new List<ShoppingCartEntry>();
         private readonly IReaderCommunicator _reader = ReaderCommunicator.GetInstance();
-        private readonly ITagDataBase db = new TagDataBase();
+        private readonly ITagDataBase _db = new TagDataBase();
 
         public delegate void NewEntryEventHandler(NewEntryEventArgs e);
         public event NewEntryEventHandler OnEntryChanged;
@@ -19,7 +19,7 @@ namespace Domain
         public ShoppingCart()
         {
             // Connect to database
-            db.Connect();
+            _db.Connect();
             
             // Connect to RFID-Reader
             _reader.Connect();
@@ -50,7 +50,7 @@ namespace Domain
         public void HandleNewTag(TagData tagData)
         {
             // Search for item with id in db
-            ArticleData newArticle = db.GetArticleDataByTagData(tagData);   // TODO check what happens on no item found
+            ArticleData newArticle = _db.GetArticleDataByTagData(tagData);   // TODO check what happens on no item found
 
             // Check null
             if (newArticle == null)
