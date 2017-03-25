@@ -17,7 +17,8 @@
                 <Grid Background="#FFE5E5E5">
                     <Label x:Name="label" Content="Suche" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                     <DataGrid x:Name="dataGrid" Margin="10,41,10,10"/>
-                    <TextBox x:Name="textBox" Height="23" Margin="57,14,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBox" Height="23" Margin="57,14,90,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <Button x:Name="button1" Content="Suchen" Margin="0,16,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Artikel hinzufügen">
@@ -38,9 +39,17 @@
                             <TextBox x:Name="textBox4" Height="23" Margin="94,92,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox x:Name="groupBox1" Grid.Column="1" Header="GroupBox" Margin="10,10,10,40">
-                        <Grid HorizontalAlignment="Stretch" Height="Auto" Margin="10,0,-2,3" VerticalAlignment="Stretch" Width="Auto"/>
+                    <GroupBox x:Name="groupBox1" Grid.Column="1" Header="Chipdaten" Margin="10,10,10,40">
+                        <Grid Margin="10,0,-2,3">
+                            <Label x:Name="label5" Content="Chipnummer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label6" Content="Zeitstempel" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label7" Content="Daten" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="textBox5" Height="23" Margin="95,14,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <TextBox x:Name="textBox6" Height="23" Margin="95,40,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
+                            <TextBox x:Name="textBox7" Height="23" Margin="95,66,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" IsEnabled="False"/>
+                        </Grid>
                     </GroupBox>
+                    <Button x:Name="button" Content="Verknüpfung anlegen" Grid.Column="1" Margin="0,0,10,10" HorizontalAlignment="Right" Width="122" Height="20" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
         </TabControl>
