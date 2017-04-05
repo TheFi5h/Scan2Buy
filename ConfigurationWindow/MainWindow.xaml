@@ -29,10 +29,10 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox x:Name="groupBox" Header="Artikeldaten" Margin="10,10,10,40">
                         <Grid Margin="10,0,-2,3">
-                            <Label x:Name="label2" Content="Name" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top"/>
-                            <Label x:Name="label3" Content="Preis" HorizontalAlignment="Left" Margin="0,62,0,0" VerticalAlignment="Top"/>
-                            <Label x:Name="label4" Content="Notiz" HorizontalAlignment="Left" Margin="0,88,0,0" VerticalAlignment="Top"/>
-                            <Label x:Name="label1" Content="Artikelnummer" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="labelArticleNumber" Content="Artikelnummer" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="labelArticleName" Content="Name" HorizontalAlignment="Left" Margin="0,36,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="labelArticlePrice" Content="Preis" HorizontalAlignment="Left" Margin="0,62,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="labelArticleNote" Content="Notiz" HorizontalAlignment="Left" Margin="0,88,0,0" VerticalAlignment="Top"/>
                             <TextBox x:Name="textBox1" Height="23" Margin="94,14,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                             <TextBox x:Name="textBox2" Height="23" Margin="94,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                             <TextBox x:Name="textBox3" Height="23" Margin="94,66,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -41,12 +41,12 @@
                     </GroupBox>
                     <GroupBox x:Name="groupBox1" Grid.Column="1" Header="Chipdaten" Margin="10,10,10,40">
                         <Grid Margin="10,0,-2,3">
-                            <Label x:Name="label5" Content="Chipnummer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                            <Label x:Name="label6" Content="Zeitstempel" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
-                            <Label x:Name="label7" Content="Daten" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
-                            <TextBox x:Name="textBox5" Height="23" Margin="95,14,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                            <TextBox x:Name="textBox6" Height="23" Margin="95,40,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-                            <TextBox x:Name="textBox7" Height="23" Margin="95,66,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" IsEnabled="False"/>
+                            <Label x:Name="labelChipNumber" Content="Chipnummer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="labelTimestamp" Content="Zeitstempel" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="labelTagData" Content="Daten" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="textBoxChipNumber" Height="23" Margin="95,14,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                            <TextBox x:Name="textBoxTimestamp" Height="23" Margin="95,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                            <TextBox x:Name="textBoxTagData" Height="23" Margin="95,66,10,0" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="False"/>
                         </Grid>
                     </GroupBox>
                     <Button x:Name="button" Content="Verknüpfung anlegen" Grid.Column="1" Margin="0,0,10,10" HorizontalAlignment="Right" Width="122" Height="20" VerticalAlignment="Bottom"/>

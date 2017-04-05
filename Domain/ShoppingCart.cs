@@ -50,7 +50,7 @@ namespace Domain
         public void HandleNewTag(TagData tagData)
         {
             // Search for item with id in db
-            ArticleData newArticle = _db.GetArticleDataByTagData(tagData);   // TODO check what happens on no item found
+            ArticleData newArticle = _db.GetArticleDataByTagData(tagData);
 
             // Check null
             if (newArticle == null)
