@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_App", "s2b_core_wpf\WPF_App.csproj", "{4813E014-295A-43B4-ACBC-CE83BE4E6AAB}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,9 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_App", "s2b_core_wpf\WPF
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{E2072B98-B55C-4D9B-B58B-A1A277E9F37A}"
-	ProjectSection(SolutionItems) = preProject
-		Domain\ITagDataBase.cs = Domain\ITagDataBase.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controller", "Controller", "{722ABB41-79AF-4E9F-8A8F-AD92748D0F9C}"
 EndProject
