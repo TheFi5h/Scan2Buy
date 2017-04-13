@@ -24,7 +24,6 @@ namespace Domain
             {
                 // Connect to db
                 Connect();
-                _hasOpenedConnection = true;
             }
 
             // Create command
