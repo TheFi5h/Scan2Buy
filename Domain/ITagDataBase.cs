@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    interface ITagDataBase
+    public interface ITagDataBase
     {
         void SetUpDataBase();                                           // to create the needed tables when first using the database
         void Connect();                                                 // to start the db or initate a link to it maybe add info here

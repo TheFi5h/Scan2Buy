@@ -1,6 +1,6 @@
 ﻿namespace Domain
 {
-    class ArticleData      // represents the data about one distinct article
+    public class ArticleData      // represents the data about one distinct article
     { 
         public int Id { get; set; }         // Acts as an id of the article
         public string Name { get; set; }        // The Name of the article

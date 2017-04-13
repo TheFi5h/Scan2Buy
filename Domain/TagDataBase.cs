@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Domain
 {
-    class TagDataBase : ITagDataBase
+    public class TagDataBase : ITagDataBase
     {
         // Variables
         private const string _dataBaseFileName = "SQLiteTagDataBase.db";

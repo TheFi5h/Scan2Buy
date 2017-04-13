@@ -27,7 +27,7 @@ namespace ConfigurationWindow
             InitializeComponent();
 
             // TODO Initialize DB
-           TagDa
+           Domain.ITagDataBase
 
             // TODO Initialize Reader -> on scan -> add data from chip to fields
         }
