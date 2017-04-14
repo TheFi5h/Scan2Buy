@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
+using DataAccess;
 
 namespace Domain
 {
     public class TagDataBase : ITagDataBase
     {
         // Variables
-        private const string _dataBaseFileName = "SQLiteTagDataBase.db";
+        private const string _dataBaseFileName = "../../../SQLiteTagDataBase.db";
         private SQLiteConnection _connection;
         private bool _hasOpenedConnection = false;
 
@@ -19,6 +20,14 @@ namespace Domain
         /// </summary>
         public void SetUpDataBase()
         {
+            Logger.GetInstance().Log("DB: Initialising Database...");
+            if (_hasOpenedConnection)
+                return;
+
+            // Create database
+            SQLiteConnection.CreateFile(_dataBaseFileName);
+            Logger.GetInstance().Log("DB: Created file");
+
             // Check if the database is already connected
             if (!_hasOpenedConnection)
             {
@@ -34,12 +43,12 @@ namespace Domain
             command.CommandText = "CREATE TABLE IF NOT EXISTS links ("
                                   + "tag_id VARCHAR(30) NOT NULL PRIMARY KEY,"
                                   + "tag_timestamp VARCHAR(50),"
-                                  + "tag_data VARCHAR(255)"
+                                  + "tag_data VARCHAR(255),"
                                   + "article_id INTEGER NOT NULL,"
                                   + "article_name VARCHAR(100) NOT NULL,"
                                   + "article_note VARCHAR(255),"
-                                  + "article_cost VARCHAR(20) NOT NULL,"
-                                  + ");";
+                                  + "article_cost VARCHAR(20) NOT NULL"
+                                  + ")";
             /* link
              * string tag_id (PK)
              * string tag_timestamp
@@ -50,9 +59,10 @@ namespace Domain
              * string article_cost
              */
 
+            Logger.GetInstance().Log("DB: Creating table");
             // Execute query
             command.ExecuteNonQuery();
-            
+            Logger.GetInstance().Log("DB: Table created");
             // Freeing the resources
             command.Dispose();
         }
@@ -66,9 +76,11 @@ namespace Domain
             // Set up connection
             _connection = new SQLiteConnection();
             _connection.ConnectionString = "Data Source=" + _dataBaseFileName;
+            Logger.GetInstance().Log("DB: Opening connection");
 
             // Open connection
             _connection.Open();
+            Logger.GetInstance().Log("DB: Connection opened");
             _hasOpenedConnection = true;
         }
 
@@ -101,7 +113,9 @@ namespace Domain
             string query =
                 "INSERT INTO links (tag_id, tag_timestamp, tag_data, article_id, article_name, article_note, article_cost) VALUES ("
                 + tagData.Id + ", " + tagData.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss") + ", " + tagData.Data + ", "
-                + articleData.Id + ", " + articleData.Name + ", " + articleData.Note + ", " + articleData.Cost + ");";
+                + articleData.Id + ", " + articleData.Name + ", " + articleData.Note + ", " + articleData.Cost + ")";
+
+            Logger.GetInstance().Log("DB: Creating link");
 
             return CreateAndExecuteCommand(query);
         }
@@ -114,6 +128,7 @@ namespace Domain
             // Create query
             string query = $"DELETE FROM links WHERE tag_id={tagData.Id}";
 
+            Logger.GetInstance().Log("DB: Deleting link");
             // Create and execute query
             return CreateAndExecuteCommand(query);
         }
