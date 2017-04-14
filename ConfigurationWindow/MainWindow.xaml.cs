@@ -91,8 +91,6 @@ namespace ConfigurationWindow
 
                     SearchEntries.Add(new SearchEntry(articleFromDb.Id.ToString(), articleFromDb.Name, articleFromDb.Note, articleFromDb.Cost,
                         "", DateTime.Now, ""));
-
-                    // TODO Refresh search entries? needed?
                 }
 
                 // Search by article number
@@ -107,9 +105,10 @@ namespace ConfigurationWindow
                     {
                         SearchEntries.Add(new SearchEntry("", "", "", 0.00M, td.Id, td.TimeStamp, td.Data));
                     }
-
-                    // TODO Refresh search entries? needed?
                 }
+
+                //Update data grid
+                dataGridSearch.ItemsSource = SearchEntries;
 
                 // Set status label
                 if (articleFound)

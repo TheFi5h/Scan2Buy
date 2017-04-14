@@ -106,19 +106,33 @@ namespace Domain
 
         public bool CreateLink(TagData tagData, ArticleData articleData)
         {
+            bool returnValue = false;
+
             // Check if a conenction is open
             if (!_hasOpenedConnection)
                 return false;
 
             // Create query
-            string query =
-                "INSERT INTO links (tag_id, tag_timestamp, tag_data, article_id, article_name, article_note, article_cost) VALUES ("
-                + tagData.Id + ", " + tagData.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss") + ", " + tagData.Data + ", "
-                + articleData.Id + ", " + articleData.Name + ", " + articleData.Note + ", " + articleData.Cost + ")";
+            string query = 
+                "INSERT INTO links (tag_id, tag_timestamp, tag_data, article_id, article_name, article_note, article_cost) VALUES ('"
+                + tagData.Id + "','" + tagData.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss") + "','" + tagData.Data + "','"
+                + articleData.Id + "','" + articleData.Name + "','" + articleData.Note + "','" + articleData.Cost + "');";
 
             Logger.GetInstance().Log("DB: Creating link");
 
-            return CreateAndExecuteCommand(query);
+            try
+            {
+                // Executing the command
+                returnValue = CreateAndExecuteCommand(query);
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in TDB: " + e.Message);
+            }
+
+            Logger.GetInstance().Log("DB: Link created");
+
+            return returnValue;
         }
 
         public bool DeleteLink(TagData tagData)
@@ -179,7 +193,7 @@ namespace Domain
                 return null;
 
             // Create query
-            string query = $"SELECT article_id, article_name, article_note, article_cost FROM links WHERE tag_id={id}";
+            string query = $"SELECT article_id, article_name, article_note, article_cost FROM links WHERE tag_id={id};";
 
             // Create command
             SQLiteCommand command = new SQLiteCommand(query, _connection);
@@ -253,22 +267,33 @@ namespace Domain
                 return null;
 
             // Create query
-            string query = $"SELECT tag_id, tag_timestamp, tag_data, FROM links WHERE article_id={id}";
+            string query = $"SELECT tag_id, tag_timestamp, tag_data FROM links WHERE article_id={id};";
 
             // Create command
             SQLiteCommand command = new SQLiteCommand(query, _connection);
 
-            // Create reader
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
+            SQLiteDataReader reader;
+            try
             {
-                // Add the result to the list
-                resultList.Add(new TagData(
-                    reader[0].ToString(),
-                    DateTime.ParseExact(reader[1].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture),
-                    reader[2].ToString()));
+                // Create reader
+                reader = command.ExecuteReader();
+
+                Logger.GetInstance().Log("TDB: Reader returned");
+
+                while (reader.Read())
+                {
+                    // Add the result to the list
+                    resultList.Add(new TagData(
+                        reader[0].ToString(),
+                        DateTime.ParseExact(reader[1].ToString(), "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                        reader[2].ToString()));
+                }
             }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in TDB: " + e.Message);
+            }
+            
 
             return resultList;
         }
