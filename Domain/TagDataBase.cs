@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Runtime.InteropServices.WindowsRuntime;
 using DataAccess;
 
 namespace Domain
@@ -122,6 +123,7 @@ namespace Domain
 
         public bool DeleteLink(TagData tagData)
         {
+            bool returnValue = false;
             if (!_hasOpenedConnection)
                 return false;
 
@@ -129,12 +131,24 @@ namespace Domain
             string query = $"DELETE FROM links WHERE tag_id={tagData.Id}";
 
             Logger.GetInstance().Log("DB: Deleting link");
-            // Create and execute query
-            return CreateAndExecuteCommand(query);
-        }
+
+            try
+            {
+                // Create and execute query
+                returnValue = CreateAndExecuteCommand(query);
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in TDB: " + e.Message);
+            }
+
+            
+            return returnValue;
+    }
 
         public bool DeleteLinks(ArticleData articleData)
         {
+            bool returnValue = false;
             if (!_hasOpenedConnection)
                 return false;
 
@@ -142,7 +156,15 @@ namespace Domain
             string query = $"DELETE FROM links WHERE article_id={articleData.Id}";
 
             // Create and execute query
-            return CreateAndExecuteCommand(query);
+            try
+            {
+                returnValue = CreateAndExecuteCommand(query);
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in TDB: " + e.Message);
+            }
+            return returnValue;
         }
 
         public ArticleData GetArticleDataByTagData(TagData tagData)
@@ -162,8 +184,18 @@ namespace Domain
             // Create command
             SQLiteCommand command = new SQLiteCommand(query, _connection);
 
-            // Create reader
-            SQLiteDataReader reader = command.ExecuteReader();
+            SQLiteDataReader reader;
+
+            try
+            {
+                // Create reader
+                reader = command.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in TDB: " + e.Message);
+                return null;
+            }
 
             if (reader.Read())
             {

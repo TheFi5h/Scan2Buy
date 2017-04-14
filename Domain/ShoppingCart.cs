@@ -18,12 +18,21 @@ namespace Domain
         // Using the default Constructor
         public ShoppingCart()
         {
-            // Connect to database
-            _db.Connect();
-            
-            // Connect to RFID-Reader
-            _reader.Connect();
-
+            try
+            {
+                Logger.GetInstance().Log("SC: Connecting to database.");
+                // Connect to database
+                _db.Connect();
+                Logger.GetInstance().Log("SC: Connected to database.");
+                Logger.GetInstance().Log("SC: Connecting to reader.");
+                // Connect to RFID-Reader
+                _reader.Connect();
+                Logger.GetInstance().Log("SC: Connected to reader.");
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in SC: " + e.Message);
+            }
             // Setup event
             _reader.NewTagScanned += HandleNewTag;
         }
@@ -37,8 +46,10 @@ namespace Domain
         // Starts the reader to search for tags
         public void Start()
         {
+            Logger.GetInstance().Log("SC: Activating scanning.");
             // Activate the scanner
             _reader.ActivateScan();
+            Logger.GetInstance().Log("SC: Scanning activated.");
         }
 
         public void Stop()

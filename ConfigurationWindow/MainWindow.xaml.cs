@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
+using DataAccess;
 using Domain;
 
 namespace ConfigurationWindow
@@ -21,14 +22,24 @@ namespace ConfigurationWindow
         {
             InitializeComponent();
 
+            Logger.GetInstance().Log("CW: Connecting to database.");
+
             // Set up connection to database
             tagDb.Connect();
 
+            Logger.GetInstance().Log("CW: Connected to database.");
+
             // Set up reader communicator
+            /*
             var reader = ReaderCommunicator.GetInstance();
+            Logger.GetInstance().Log("CW: Connecting Reader.");
             reader.Connect();
+            Logger.GetInstance().Log("CW: Connected Reader.");
+            Logger.GetInstance().Log("CW: Activating scanning.");
             reader.ActivateScan();
+            Logger.GetInstance().Log("CW: Scanning activated.");
             reader.NewTagScanned += ReaderOnNewTagScanned;
+            */
         }
 
         private void ReaderOnNewTagScanned(TagData tagData)
@@ -151,7 +162,7 @@ namespace ConfigurationWindow
 
         private void buttonAddLink_Click(object sender, RoutedEventArgs e)
         {
-            TagData tagData = new TagData(textBoxChipNumber.Text, DateTime.Parse(textBoxChipTimestamp.Text), textBoxChipData.Text);
+            TagData tagData = new TagData(textBoxChipNumber.Text, DateTime.Now, textBoxChipData.Text);
             ArticleData articleData = new ArticleData();
             articleData.Id = Convert.ToInt32(textBoxArticleNumber.Text);
             articleData.Name = textBoxArticleName.Text;
