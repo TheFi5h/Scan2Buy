@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using DataAccess;
 using Domain;
 
 namespace s2b_core_wpf
@@ -53,13 +54,14 @@ namespace s2b_core_wpf
             _entries = (ReadOnlyCollection<ShoppingCartEntry>)_shoppingCart.GetEntries();   // readonly list of all entries in the cart
 
             // Update grid
+            Logger.GetInstance().Log($"App: {_entries.Count} new Tags scanned.");
             // TODO needed?
             DataGridEntries.ItemsSource = _entries;
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void DataGridEntries_OnLoaded(object sender, RoutedEventArgs e)

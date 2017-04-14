@@ -100,7 +100,7 @@ namespace ConfigurationWindow
                     // TODO Refresh search entries? needed?
                 }
 
-                // Set label
+                // Set status label
                 if (articleFound)
                 {
                     if (tagsFound)
@@ -181,7 +181,6 @@ namespace ConfigurationWindow
         public string ArticleNumber;
         public DateTime ArticleTimestamp;
         public string TagId;
-
 
         public SearchEntry(string articleNumber, string articleName, string articleNote, decimal articleCost,
             string tagId, DateTime tagTimestamp, string tagData)
