@@ -208,11 +208,12 @@ namespace ConfigurationWindow
         private void ConfigurationWindow_OnClosing(object sender, CancelEventArgs e)
         {
             // Clear up objects
+            // Disconnect tag database
             if(_tagDb.IsConnected())
                 _tagDb.Disconnect();
 
-            
-            reader.Disconnect();
+            //Disconnect reader
+            _reader.Disconnect();
         }
     }
 
