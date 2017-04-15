@@ -190,13 +190,13 @@ namespace ConfigurationWindow
 
     public class SearchEntry
     {
-        public decimal ArticleCost { get; set; }
-        public string ArticleData { get; set; }
-        public string ArticleName { get; set; }
-        public string ArticleNote { get; set; }
         public string ArticleNumber { get; set; }
-        public DateTime ArticleTimestamp { get; set; }
+        public string ArticleName { get; set; }
+        public decimal ArticleCost { get; set; }
+        public string ArticleNote { get; set; }
         public string TagId { get; set; }
+        public DateTime TagTimestamp { get; set; }
+        public string TagData { get; set; }
 
         public SearchEntry(string articleNumber, string articleName, string articleNote, decimal articleCost,
             string tagId, DateTime tagTimestamp, string tagData)
@@ -206,8 +206,8 @@ namespace ConfigurationWindow
             ArticleNote = articleNote;
             ArticleCost = articleCost;
             TagId = tagId;
-            ArticleTimestamp = tagTimestamp;
-            ArticleData = tagData;
+            TagTimestamp = tagTimestamp;
+            TagData = tagData;
         }
     }
 }
