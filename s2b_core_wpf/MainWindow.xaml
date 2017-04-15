@@ -23,7 +23,7 @@
             <Label x:Name="LabelArticleCount" Content="Artikelanzahl" Grid.Column="0" Margin="0,63,10,0" ToolTip="Anzahl der Artikel im Warenkorb" HorizontalAlignment="Right"  VerticalAlignment="Top" FontSize="22"/>
             <Label x:Name="LabelArticleCountVar" Content="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" FontSize="22"/>
             <Label x:Name="LabelPrice" Content="Preis:" Grid.Column="0" Margin="0,94,10,0" HorizontalAlignment="Right" ToolTip="Preis der Artikel im Warenkorb" VerticalAlignment="Top" FontSize="22"/>
-            <Label x:Name="LabelPriceVar" Content="€ 0,00" Grid.Column="1" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" FontSize="22"/>
+            <Label x:Name="LabelPriceVar" Content="0,00€" Grid.Column="1" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" FontSize="22"/>
             <Button x:Name="ButtonPay" Grid.Column="1" Content="Bezahlen" Margin="56,0,0,10" Height="70" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="234" BorderBrush="#FF00490D" Background="#FF007C16" FontSize="22" Click="ButtonPay_Click">
                 <Button.Effect>
                     <DropShadowEffect/>
