@@ -144,7 +144,7 @@ namespace Domain
                 return false;
 
             // Create query
-            string query = $"DELETE FROM links WHERE tag_id={tagDataId}";
+            string query = $"DELETE FROM links WHERE tag_id='{tagDataId}'";
 
             Logger.GetInstance().Log("DB: Deleting link");
 
@@ -195,7 +195,7 @@ namespace Domain
                 return null;
 
             // Create query
-            string query = $"SELECT article_id, article_name, article_note, article_cost FROM links WHERE tag_id={id};";
+            string query = $"SELECT article_id, article_name, article_note, article_cost FROM links WHERE tag_id='{id}';";
 
             // Create command
             SQLiteCommand command = new SQLiteCommand(query, _connection);
@@ -269,7 +269,7 @@ namespace Domain
                 return null;
 
             // Create query
-            string query = $"SELECT tag_id, tag_timestamp, tag_data FROM links WHERE article_id={id};";
+            string query = $"SELECT tag_id, tag_timestamp, tag_data FROM links WHERE article_id='{id}';";
 
             // Create command
             SQLiteCommand command = new SQLiteCommand(query, _connection);

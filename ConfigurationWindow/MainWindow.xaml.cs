@@ -57,7 +57,7 @@ namespace ConfigurationWindow
             // Set the fields
             textBoxSearch.Text = tagData.Id;
             textBoxChipNumber.Text = tagData.Id;
-            textBoxChipTimestamp.Text = tagData.TimeStamp.ToString(CultureInfo.InvariantCulture);
+            textBoxChipTimestamp.Text = tagData.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss");
             textBoxChipData.Text = tagData.Data;
         }
 
