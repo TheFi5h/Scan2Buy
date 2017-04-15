@@ -73,92 +73,90 @@ namespace ConfigurationWindow
             SearchEntries.Clear();
 
             // Check which fields are set
-            if (textBoxSearch.Text != "")
+            if (textBoxSearch.Text == "") return;
+
+            int parsedNumber = 0;
+
+            // Try parse given number
+            if (!int.TryParse(textBoxSearch.Text, out parsedNumber))
             {
-                int parsedNumber = 0;
+                labelStatus.Content = "Status: Bitte gültige Nummer eingeben!";
+                return;
+            }
 
-                // Try parse given number
-                if (!Int32.TryParse(textBoxSearch.Text, out parsedNumber))
+            // Search by chip number
+            ArticleData articleFromDb = _tagDb.GetArticleDataByTagData(parsedNumber);
+
+            // Check return value
+            if (articleFromDb != null)
+            {
+                articleFound = true;
+
+                SearchEntries.Add(new SearchEntry(articleFromDb.Id.ToString(), articleFromDb.Name, articleFromDb.Note, articleFromDb.Cost,
+                    "", DateTime.Now, ""));
+            }
+
+            // Search by article number
+            List<TagData> tagsFromDb = _tagDb.GetTagDataByArticleData(parsedNumber);
+
+            // Check return value
+            if (tagsFromDb.Count >= 1)
+            {
+                tagsFound = true;
+
+                foreach (var td in tagsFromDb)
                 {
-                    labelStatus.Content = "Status: Bitte gültige Nummer eingeben!";
-                    return;
+                    SearchEntries.Add(new SearchEntry("", "", "", 0.00M, td.Id, td.TimeStamp, td.Data));
                 }
+            }
 
-                // Search by chip number
-                ArticleData articleFromDb = _tagDb.GetArticleDataByTagData(parsedNumber);
+            //Update data grid
+            dataGridSearch.ItemsSource = SearchEntries;
 
-                // Check return value
-                if (articleFromDb != null)
+            // Set status label
+            if (articleFound)
+            {
+                if (tagsFound)
                 {
-                    articleFound = true;
-
-                    SearchEntries.Add(new SearchEntry(articleFromDb.Id.ToString(), articleFromDb.Name, articleFromDb.Note, articleFromDb.Cost,
-                        "", DateTime.Now, ""));
+                    labelStatus.Content = "Status: Artikel und Tags gefunden.";
                 }
-
-                // Search by article number
-                List<TagData> tagsFromDb = _tagDb.GetTagDataByArticleData(parsedNumber);
-
-                // Check return value
-                if (tagsFromDb.Count >= 1)
+                else
                 {
-                    tagsFound = true;
+                    labelStatus.Content = "Status: Artikel gefunden.";
 
-                    foreach (var td in tagsFromDb)
-                    {
-                        SearchEntries.Add(new SearchEntry("", "", "", 0.00M, td.Id, td.TimeStamp, td.Data));
-                    }
+                    //DEBUG
+                    Logger.GetInstance().Log($"CW: Article received: {articleFromDb.Id}, {articleFromDb.Name}, {articleFromDb.Cost}, {articleFromDb.Note}");
                 }
-
-                //Update data grid
-                dataGridSearch.ItemsSource = SearchEntries;
-
-                // Set status label
-                if (articleFound)
+            }
+            else
+            {
+                if (tagsFound)
                 {
-                    if (tagsFound)
-                    {
-                        labelStatus.Content = "Status: Artikel und Tags gefunden.";
-                    }
-                    else
-                    {
-                        labelStatus.Content = "Status: Artikel gefunden.";
+                    labelStatus.Content = "Status: Tags gefunden.";
 
-                        //DEBUG
-                        Logger.GetInstance().Log($"CW: Article received: {articleFromDb.Id}, {articleFromDb.Name}, {articleFromDb.Cost}, {articleFromDb.Note}");
+                    //DEBUG
+                    foreach (var tag in tagsFromDb)
+                    {
+                        Logger.GetInstance().Log($"CW: Tag received: {tag.Id}, {tag.TimeStamp}, {tag.Data}");
                     }
                 }
                 else
                 {
-                    if (tagsFound)
-                    {
-                        labelStatus.Content = "Status: Tags gefunden.";
-
-                        //DEBUG
-                        foreach (var tag in tagsFromDb)
-                        {
-                            Logger.GetInstance().Log($"CW: Tag received: {tag.Id}, {tag.TimeStamp}, {tag.Data}");
-                        }
-                    }
-                    else
-                    {
-                        labelStatus.Content = "Status: Suche ergab keine Ergebnisse.";
-                    }
+                    labelStatus.Content = "Status: Suche ergab keine Ergebnisse.";
                 }
-
             }
         }
 
         private void buttonDeleteLink_Click(object sender, RoutedEventArgs e)
         {
-            int parsedTagId = 0;
+            int parsedTagId;
 
             // Check for db connection
             if (!_tagDb.IsConnected())
                 return;
 
             // Try parsing the text to an int
-            if (!Int32.TryParse(textBoxChipNumber.Text, out parsedTagId))
+            if (!int.TryParse(textBoxChipNumber.Text, out parsedTagId))
             {
                 // If parsing not successful
                 labelStatus.Content = "Status: Bitte gültige Id eingeben!";
@@ -185,11 +183,13 @@ namespace ConfigurationWindow
         private void buttonAddLink_Click(object sender, RoutedEventArgs e)
         {
             TagData tagData = new TagData(textBoxChipNumber.Text, DateTime.Now, textBoxChipData.Text);
-            ArticleData articleData = new ArticleData();
-            articleData.Id = Convert.ToInt32(textBoxArticleNumber.Text);
-            articleData.Name = textBoxArticleName.Text;
-            articleData.Cost = Convert.ToDecimal(textBoxArticlePrice.Text);
-            articleData.Note = textBoxArticleNote.Text;
+            ArticleData articleData = new ArticleData
+            {
+                Id = Convert.ToInt32(textBoxArticleNumber.Text),
+                Name = textBoxArticleName.Text,
+                Cost = Convert.ToDecimal(textBoxArticlePrice.Text),
+                Note = textBoxArticleNote.Text
+            };
 
             if (_tagDb.IsConnected())
             {
