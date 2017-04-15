@@ -112,12 +112,21 @@ namespace Domain
         // Disconnects the reader (needs to be down for the internals procedures of the dll)
         public bool Disconnect()
         {
+            if (Scanning)
+            {
+                // Stop scanning first (waits for scanner to finish
+                Logger.GetInstance().Log("RC: Stopping scanner");
+                DeactivateScan();
+                Logger.GetInstance().Log("RC: Scanner stopped");
+            }
+
             if (_reader.Connected) // check if the connection could be established
             {
                 try
                 {
+                    Logger.GetInstance().Log("RC: Disconnecting from device");
                     _reader.DisConnect();
-                    Logger.GetInstance().Log("RC: Reader disconnected from Device");
+                    Logger.GetInstance().Log("RC: Disconnected from Device");
                     return true;
                 }
                 catch (Exception e)

@@ -204,9 +204,15 @@ namespace ConfigurationWindow
             }
         }
 
+        // Event called when closing the window
         private void ConfigurationWindow_OnClosing(object sender, CancelEventArgs e)
         {
+            // Clear up objects
+            if(_tagDb.IsConnected())
+                _tagDb.Disconnect();
+
             
+            reader.Disconnect();
         }
     }
 
