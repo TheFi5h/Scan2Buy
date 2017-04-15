@@ -66,6 +66,9 @@ namespace ConfigurationWindow
             bool tagsFound = false;
             bool articleFound = false;
 
+            bool textParsable;
+            int parsedNumber = 0;
+
             // Check for db conntection
             if (!_tagDb.IsConnected())
                 return;
@@ -73,17 +76,11 @@ namespace ConfigurationWindow
             // Clear previous search entries
             SearchEntries.Clear();
 
-            // Check which fields are set
+            // Check if field is set
             if (textBoxSearch.Text == "") return;
 
-            int parsedNumber = 0;
-
             // Try parse given number
-            if (!int.TryParse(textBoxSearch.Text, out parsedNumber))
-            {
-                labelStatus.Content = "Status: Bitte gültige Nummer eingeben!";
-                return;
-            }
+            textParsable = int.TryParse(textBoxSearch.Text, out parsedNumber);
 
             // Search by chip number
             ArticleData articleFromDb = _tagDb.GetArticleDataByTagData(textBoxSearch.Text);
@@ -95,21 +92,27 @@ namespace ConfigurationWindow
 
                 SearchEntries.Add(new SearchEntry(articleFromDb.Id.ToString(), articleFromDb.Name, articleFromDb.Note, articleFromDb.Cost,
                     "", DateTime.Now, ""));
+                Logger.GetInstance().Log($"CW: Article received: {articleFromDb.Id}, {articleFromDb.Name}, {articleFromDb.Cost}, {articleFromDb.Note}");
             }
 
-            // Search by article number
-            List<TagData> tagsFromDb = _tagDb.GetTagDataByArticleData(parsedNumber);
-
-            // Check return value
-            if (tagsFromDb.Count >= 1)
+            if (textParsable)
             {
-                tagsFound = true;
+                // Search by article number
+                List<TagData> tagsFromDb = _tagDb.GetTagDataByArticleData(parsedNumber);
 
-                foreach (var td in tagsFromDb)
+                // Check return value
+                if (tagsFromDb.Count >= 1)
                 {
-                    SearchEntries.Add(new SearchEntry("", "", "", 0.00M, td.Id, td.TimeStamp, td.Data));
+                    tagsFound = true;
+
+                    foreach (var td in tagsFromDb)
+                    {
+                        SearchEntries.Add(new SearchEntry("", "", "", 0.00M, td.Id, td.TimeStamp, td.Data));
+                        Logger.GetInstance().Log($"CW: Tag received: {td.Id}, {td.TimeStamp}, {td.Data}");
+                    }
                 }
             }
+            
 
             //Update data grid
             dataGridSearch.Items.Refresh();
@@ -124,9 +127,6 @@ namespace ConfigurationWindow
                 else
                 {
                     labelStatus.Content = "Status: Artikel gefunden.";
-
-                    //DEBUG
-                    Logger.GetInstance().Log($"CW: Article received: {articleFromDb.Id}, {articleFromDb.Name}, {articleFromDb.Cost}, {articleFromDb.Note}");
                 }
             }
             else
@@ -134,12 +134,6 @@ namespace ConfigurationWindow
                 if (tagsFound)
                 {
                     labelStatus.Content = "Status: Tags gefunden.";
-
-                    //DEBUG
-                    foreach (var tag in tagsFromDb)
-                    {
-                        Logger.GetInstance().Log($"CW: Tag received: {tag.Id}, {tag.TimeStamp}, {tag.Data}");
-                    }
                 }
                 else
                 {
@@ -154,6 +148,8 @@ namespace ConfigurationWindow
             if (!_tagDb.IsConnected())
                 return;
 
+            Logger.GetInstance().Log("CW: Deleting link.");
+
             // Check if field is set
             if (textBoxChipNumber.Text != "")
             {
@@ -162,10 +158,12 @@ namespace ConfigurationWindow
                 {
                     // Tag could be deleted
                     labelStatus.Content = "Status: Link erfolgreich gelöscht.";
+                    Logger.GetInstance().Log("CW: Deleted link.");
                 }
                 else
                 {
                     labelStatus.Content = "Status: Link konnte nicht gelöscht werden";
+                    Logger.GetInstance().Log("CW: Could not delete link.");
                 }
             }
         }

@@ -169,7 +169,7 @@ namespace Domain
                 return false;
 
             // Create query
-            string query = $"DELETE FROM links WHERE article_id={articleDataId}";
+            string query = $"DELETE FROM links WHERE article_id='{articleDataId}'";
 
             // Create and execute query
             try
