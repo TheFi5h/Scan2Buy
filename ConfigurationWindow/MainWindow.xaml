@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ConfigurationWindow"
         xmlns:Properties="clr-namespace:ConfigurationWindow.Properties" x:Name="Datenbank_Konfiguratior" x:Class="ConfigurationWindow.MainWindow"
         mc:Ignorable="d"
-        Title="Datenbank Management" Height="425.657" Width="628.939">
+        Title="Datenbank Management" Height="563.657" Width="811.939">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="259*"/>
@@ -16,7 +16,7 @@
             <TabItem Header="Bestand prüfen">
                 <Grid Background="#FFE5E5E5">
                     <Label x:Name="label" Content="Suche" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <DataGrid x:Name="dataGridSearch" Margin="10,41,10,10"/>
+                    <DataGrid x:Name="dataGridSearch" Margin="10,41,10,10" />
                     <TextBox x:Name="textBoxSearch" Height="23" Margin="57,14,90,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                     <Button x:Name="buttonSearch" Content="Suchen" Margin="0,16,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="buttonSearch_Click"/>
                 </Grid>
@@ -51,7 +51,7 @@
                         </Grid>
                     </GroupBox>
                     <Button x:Name="buttonAddLink" Content="Einbuchen" Grid.Column="1" Margin="0,0,10,10" HorizontalAlignment="Right" Width="122" Height="20" VerticalAlignment="Bottom" Click="buttonAddLink_Click"/>
-                    <Label x:Name="labelStatus" Content="Status: OK" HorizontalAlignment="Left" Margin="10,314,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="448"/>
+                    <Label x:Name="labelStatus" Content="Status: OK" HorizontalAlignment="Left" Margin="10,452,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="448"/>
                 </Grid>
             </TabItem>
         </TabControl>

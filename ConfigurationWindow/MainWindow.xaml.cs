@@ -127,6 +127,12 @@ namespace ConfigurationWindow
                     if (tagsFound)
                     {
                         labelStatus.Content = "Status: Tags gefunden.";
+
+                        //DEBUG
+                        foreach (var tag in tagsFromDb)
+                        {
+                            Logger.GetInstance().Log($"CW: Tag received: {tag.Id}, {tag.TimeStamp}, {tag.Data}");
+                        }
                     }
                     else
                     {
@@ -184,13 +190,13 @@ namespace ConfigurationWindow
 
     public class SearchEntry
     {
-        public decimal ArticleCost;
-        public string ArticleData;
-        public string ArticleName;
-        public string ArticleNote;
-        public string ArticleNumber;
-        public DateTime ArticleTimestamp;
-        public string TagId;
+        public decimal ArticleCost { get; set; }
+        public string ArticleData { get; set; }
+        public string ArticleName { get; set; }
+        public string ArticleNote { get; set; }
+        public string ArticleNumber { get; set; }
+        public DateTime ArticleTimestamp { get; set; }
+        public string TagId { get; set; }
 
         public SearchEntry(string articleNumber, string articleName, string articleNote, decimal articleCost,
             string tagId, DateTime tagTimestamp, string tagData)
