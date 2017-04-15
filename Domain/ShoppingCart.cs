@@ -11,6 +11,7 @@ namespace Domain
         private readonly List<ShoppingCartEntry> _listArticles = new List<ShoppingCartEntry>();
         private readonly IReaderCommunicator _reader = ReaderCommunicator.GetInstance();
         private readonly ITagDataBase _db = new TagDataBase();
+        private readonly List<string> _tagsInCart = new List<string>();
 
         public delegate void NewEntryEventHandler(NewEntryEventArgs e);
         public event NewEntryEventHandler OnEntryChanged;
@@ -60,6 +61,13 @@ namespace Domain
 
         public void HandleNewTag(TagData tagData)
         {
+            // Only add if not already in list of scanned tags
+            if (_tagsInCart.Contains(tagData.Id))
+                return;
+            
+            // Add it to the list of scanned tags
+            _tagsInCart.Add(tagData.Id);
+
             // Search for item with id in db
             ArticleData newArticle = _db.GetArticleDataByTagData(tagData);
 
@@ -95,6 +103,19 @@ namespace Domain
         public IReadOnlyCollection<ShoppingCartEntry> GetEntries()
         {
             return _listArticles.AsReadOnly();
+        }
+
+        public List<string> GetScannedTags()
+        {
+            // Return copy of scanned tags
+            return new List<string>(_tagsInCart);
+        }
+
+        public void Clear()
+        {
+            // Clear the lists
+            _listArticles.Clear();
+            _tagsInCart.Clear();
         }
 
         // Add 1 item to the cart (increase amount if article is already inside or 

@@ -79,8 +79,14 @@ namespace s2b_core_wpf
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
             // Disconnect form objects
-            // Disconnect from reader
-            _shoppingCart.Stop();
+            try
+            {
+                _shoppingCart.Stop();
+            }
+            catch (Exception ex)
+            {
+                Logger.GetInstance().Log("Exception caught in App: " + ex.Message);
+            }
 
             Close();
         }
@@ -94,6 +100,28 @@ namespace s2b_core_wpf
                 // Set items source
                 grid.ItemsSource = _entries;
             }
+        }
+
+        private void ButtonPay_Click(object sender, RoutedEventArgs e)
+        {
+            // Remove bought tags from database
+            var scannedTags = _shoppingCart.GetScannedTags();
+
+            try
+            {
+                foreach (var tagId in scannedTags)
+                {
+                    // Remove the tag from the db
+                    _dataBase.DeleteLink(tagId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.GetInstance().Log("-- Exception caught in App: " + ex.Message);
+            }                
+
+            // Clear the shopping cart
+            _shoppingCart.Clear();
         }
     }
 }
