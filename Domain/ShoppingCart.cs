@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using DataAccess;
 
@@ -100,9 +101,16 @@ namespace Domain
         /// Gets the entries in the shopping cart as a readonly list
         /// </summary>
         /// <returns>A list of all current ShoppingCartEntries</returns>
-        public IReadOnlyCollection<ShoppingCartEntry> GetEntries()
+        public List<DataGridEntry> GetEntries()
         {
-            return _listArticles.AsReadOnly();
+            List<DataGridEntry> entries = new List<DataGridEntry>();
+
+            foreach (var entry in _listArticles)
+            {
+                entries.Add(new DataGridEntry(entry.Name, entry.Amount, entry.PricePerUnit, entry.Price));
+            }
+
+            return entries;
         }
 
         public List<string> GetScannedTags()
@@ -128,7 +136,7 @@ namespace Domain
                 {
                     item.AddOne();  // If found, add one item (automatically recalculates the price too)
                     OnEntryChanged(new NewEntryEventArgs(NewEntryEventArgs.ShoppingCartAction.Add, newEntry));  // Trigger event
-                    Logger.GetInstance().Log("Item added to ShoppingCart");
+                    Logger.GetInstance().Log($"Amount changed for '{item.GetArticleNumber()}'");
                     return;
                 }
             }
@@ -181,6 +189,22 @@ namespace Domain
                 Action = shoppingCartAction;
                 Entry = entry;
             }
+        }
+    }
+
+    public class DataGridEntry
+    {
+        public string Name { get; set; }
+        public int Amount { get; set; }
+        public decimal PricePerUnit { get; set; }
+        public decimal Price { get; set; }
+
+        public DataGridEntry(string name, int amount, decimal pricePerUnit, decimal price)
+        {
+            Name = name;
+            Amount = amount;
+            PricePerUnit = pricePerUnit;
+            Price = price;
         }
     }
 }

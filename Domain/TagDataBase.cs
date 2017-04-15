@@ -120,6 +120,8 @@ namespace Domain
                 + tagData.Id + "','" + tagData.TimeStamp.ToString("dd.MM.yyyy HH:mm:ss") + "','" + tagData.Data + "','"
                 + articleData.Id + "','" + articleData.Name + "','" + articleData.Note + "','" + articleData.Cost + "');";
 
+            Logger.GetInstance().Log("DB: Creating link query: " + query);
+
             Logger.GetInstance().Log("DB: Creating link");
 
             try
@@ -157,7 +159,6 @@ namespace Domain
             {
                 Logger.GetInstance().Log("--Exception caught in TDB: " + e.Message);
             }
-
             
             return returnValue;
     }

@@ -201,25 +201,46 @@ namespace Domain
                             if (th == null)
                                 continue;
 
-                            var tagHandler = _reader.TagSelect(th, 0);
+                            FedmIscTagHandler tagHandler;
+
+                            try
+                            {
+                                tagHandler = _reader.TagSelect(th, 0);
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.GetInstance().Log("--Exception caught in SC: " + e.Message);
+                                continue;
+                            }
+                            
                             Logger.GetInstance().Log("SC: Called TagSelect");
 
                             // Check if the scanned tag is of the correct type
                             if (!(tagHandler is FedmIscTagHandler_ISO15693))
                                 continue;
 
-                            // Create TagData from tag
-                            TagData scannedTag = FormatTagHandlerToTagData((FedmIscTagHandler_ISO15693)tagHandler);
-
-
-                            lock (_scannedTags)  // lock object because same list is used as return value in asynchronous main thread
+                            try
                             {
-                                if (!_scannedTags.Contains(scannedTag))
+                                // Create TagData from tag
+                                TagData scannedTag = FormatTagHandlerToTagData((FedmIscTagHandler_ISO15693) tagHandler);
+
+                                lock (_scannedTags
+                                ) // lock object because same list is used as return value in asynchronous main thread
                                 {
-                                    _scannedTags.Add(scannedTag);       // info about tag gets saved into list if its not already inside
-                                    OnNewTagScanned(scannedTag);
+                                    if (!_scannedTags.Contains(scannedTag))
+                                    {
+                                        _scannedTags
+                                            .Add(
+                                                scannedTag); // info about tag gets saved into list if its not already inside
+                                        OnNewTagScanned(scannedTag);
+                                    }
                                 }
                             }
+                            catch (Exception e)
+                            {
+                                Logger.GetInstance().Log("--Exception caught in SC: " + e.Message);
+                            }
+                            
                         }
 
                         System.Threading.Thread.Sleep(100); // if tags could have been found, wait for 100 ms

@@ -13,7 +13,7 @@
                 <RowDefinition Height="313*"/>
             </Grid.RowDefinitions>
             <Label x:Name="LabelShoppingCart" Content="Warenkorb" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="28" FontFamily="Century Gothic"/>
-            <DataGrid x:Name="DataGridEntries" Margin="10" Grid.Row="1" Loaded="DataGridEntries_OnLoaded" />
+            <DataGrid x:Name="DataGridEntries" HorizontalAlignment="Left" Height="673" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="480"/>
         </Grid>
         <Grid HorizontalAlignment="Right" Margin="0,10, 10, 10" Width="500">
             <Grid.ColumnDefinitions>
