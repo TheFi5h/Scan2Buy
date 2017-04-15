@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using DataAccess;
@@ -15,6 +16,7 @@ namespace s2b_core_wpf
         private ReadOnlyCollection<ShoppingCartEntry> _entries;
         private delegate void SetFields(ShoppingCart.NewEntryEventArgs e);
 
+        private readonly ITagDataBase _dataBase = new TagDataBase();
 
         public MainWindow()
         {
@@ -22,8 +24,23 @@ namespace s2b_core_wpf
 
             // Initialising own procedures
 
-            _shoppingCart = new ShoppingCart();                  // create new shoppingCart
+            try
+            {
+                // Connecting to shopping cart
+                Logger.GetInstance().Log("App: Connecting to shopping cart.");
+                _shoppingCart = new ShoppingCart();
+                Logger.GetInstance().Log("App: Connected to shopping cart.");
 
+                Logger.GetInstance().Log("App: Connecting to database.");
+                // Connect to database
+                _dataBase.Connect();
+                Logger.GetInstance().Log("App: Connected to databse.");
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in App: " + e.Message);
+            }
+            
 
             DataGridEntries.AutoGenerateColumns = true;         // automatically binds all public properties of shopping cart entry to one column each
             DataGridEntries.IsReadOnly = true;                  // So that the user cant move items 
@@ -61,6 +78,10 @@ namespace s2b_core_wpf
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
         {
+            // Disconnect form objects
+            // Disconnect from reader
+            _shoppingCart.Stop();
+
             Close();
         }
 

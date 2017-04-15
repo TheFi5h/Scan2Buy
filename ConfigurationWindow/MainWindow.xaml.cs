@@ -36,7 +36,6 @@ namespace ConfigurationWindow
             dataGridSearch.ItemsSource = SearchEntries;
 
             // Set up reader communicator
-            /*
             var reader = ReaderCommunicator.GetInstance();
             Logger.GetInstance().Log("CW: Connecting Reader.");
             reader.Connect();
@@ -45,7 +44,6 @@ namespace ConfigurationWindow
             reader.ActivateScan();
             Logger.GetInstance().Log("CW: Scanning activated.");
             reader.NewTagScanned += ReaderOnNewTagScanned;
-            */
         }
 
         private void ReaderOnNewTagScanned(TagData tagData)
@@ -88,7 +86,7 @@ namespace ConfigurationWindow
             }
 
             // Search by chip number
-            ArticleData articleFromDb = _tagDb.GetArticleDataByTagData(parsedNumber);
+            ArticleData articleFromDb = _tagDb.GetArticleDataByTagData(textBoxSearch.Text);
 
             // Check return value
             if (articleFromDb != null)
@@ -171,7 +169,7 @@ namespace ConfigurationWindow
             if (textBoxChipNumber.Text != "")
             {
                 // Delete the entry with the given chip number
-                if (_tagDb.DeleteLink(parsedTagId))
+                if (_tagDb.DeleteLink(textBoxChipNumber.Text))
                 {
                     // Tag could be deleted
                     labelStatus.Content = "Status: Link erfolgreich gelöscht.";

@@ -135,7 +135,7 @@ namespace Domain
             return returnValue;
         }
 
-        public bool DeleteLink(int tagDataId)
+        public bool DeleteLink(string tagDataId)
         {
             bool returnValue = false;
             if (!_hasOpenedConnection)
@@ -183,10 +183,10 @@ namespace Domain
 
         public ArticleData GetArticleDataByTagData(TagData tagData)
         {
-            return GetArticleDataByTagData(Convert.ToInt32(tagData.Id));
+            return GetArticleDataByTagData(tagData.Id);
         }
 
-        public ArticleData GetArticleDataByTagData(int id)
+        public ArticleData GetArticleDataByTagData(string id)
         {
             // Check if the connection is open
             if (!_hasOpenedConnection)

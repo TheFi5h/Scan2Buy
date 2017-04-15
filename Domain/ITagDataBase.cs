@@ -15,11 +15,11 @@ namespace Domain
         bool IsConnected();                                             // to check if the connection to the db is established
 
         bool CreateLink(TagData tagData, ArticleData articleData);      // to link TagData to a specific article
-        bool DeleteLink(int tagDataId);                               // to delete the set link by the tag id
+        bool DeleteLink(string tagDataId);                               // to delete the set link by the tag id
         bool DeleteLinks(int articleDataId);                      // to delete the set link by the article id
 
         ArticleData GetArticleDataByTagData(TagData tagData);           // to get the ArticleData linked to the given TagData
-        ArticleData GetArticleDataByTagData(int id);                    // to get the ArticleData linked to the given TagData
+        ArticleData GetArticleDataByTagData(string id);                    // to get the ArticleData linked to the given TagData
 
         List<TagData> GetTagDataByArticleData(ArticleData articleData); // to get the TagData linked to the given ArticleData
         List<TagData> GetTagDataByArticleData(int id);                  // to get the TagData linked to the ArticleData with the given Id
