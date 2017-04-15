@@ -47,11 +47,11 @@
                             <TextBox x:Name="textBoxChipNumber" Height="23" Margin="95,14,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                             <TextBox x:Name="textBoxChipTimestamp" Height="23" Margin="95,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                             <TextBox x:Name="textBoxChipData" Height="23" Margin="95,66,10,0" TextWrapping="Wrap" VerticalAlignment="Top" IsEnabled="False"/>
-                            <Button x:Name="buttonDeleteLink" Content="Ausbuchen" HorizontalAlignment="Left" Margin="141,242,0,0" VerticalAlignment="Top" Width="107" Click="buttonDeleteLink_Click"/>
+                            <Button x:Name="buttonDeleteLink" Content="Ausbuchen" Margin="0,0,10,10" Click="buttonDeleteLink_Click" HorizontalAlignment="Right" Width="107" Height="20" VerticalAlignment="Bottom"/>
                         </Grid>
                     </GroupBox>
                     <Button x:Name="buttonAddLink" Content="Einbuchen" Grid.Column="1" Margin="0,0,10,10" HorizontalAlignment="Right" Width="122" Height="20" VerticalAlignment="Bottom" Click="buttonAddLink_Click"/>
-                    <Label x:Name="labelStatus" Content="Status: OK" HorizontalAlignment="Left" Margin="10,452,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="448"/>
+                    <Label x:Name="labelStatus" Content="Status: OK" HorizontalAlignment="Left" Margin="10,0,0,7" Grid.ColumnSpan="2" Width="631" Height="26" VerticalAlignment="Bottom"/>
                 </Grid>
             </TabItem>
         </TabControl>
