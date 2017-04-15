@@ -175,6 +175,12 @@ namespace ConfigurationWindow
             decimal parsedArticlePrice;
             bool couldParseArticlePrice;
 
+            if (textBoxArticlePrice.Text != "")
+            {
+                // Replaces a dot with a comma
+                textBoxArticlePrice.Text = textBoxArticlePrice.Text.Replace('.', ',');
+            }
+
             try
             {
                 couldParseArticleNumber = int.TryParse(textBoxArticleNumber.Text, out parsedArticleNumber);
