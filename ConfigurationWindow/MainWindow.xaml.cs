@@ -150,20 +150,9 @@ namespace ConfigurationWindow
 
         private void buttonDeleteLink_Click(object sender, RoutedEventArgs e)
         {
-            int parsedTagId;
-
             // Check for db connection
             if (!_tagDb.IsConnected())
                 return;
-
-            // Try parsing the text to an int
-            if (!int.TryParse(textBoxChipNumber.Text, out parsedTagId))
-            {
-                // If parsing not successful
-                labelStatus.Content = "Status: Bitte gültige Id eingeben!";
-                return;
-            }
-                
 
             // Check if field is set
             if (textBoxChipNumber.Text != "")
@@ -183,26 +172,48 @@ namespace ConfigurationWindow
 
         private void buttonAddLink_Click(object sender, RoutedEventArgs e)
         {
-            TagData tagData = new TagData(textBoxChipNumber.Text, DateTime.Now, textBoxChipData.Text);
-            ArticleData articleData = new ArticleData
-            {
-                Id = Convert.ToInt32(textBoxArticleNumber.Text),
-                Name = textBoxArticleName.Text,
-                Cost = Convert.ToDecimal(textBoxArticlePrice.Text),
-                Note = textBoxArticleNote.Text
-            };
+            int parsedArticleNumber;
+            bool couldParseArticleNumber;
+            decimal parsedArticlePrice;
+            bool couldParseArticlePrice;
 
-            if (_tagDb.IsConnected())
+            try
             {
-                if (_tagDb.CreateLink(tagData, articleData))
+                couldParseArticleNumber = int.TryParse(textBoxArticleNumber.Text, out parsedArticleNumber);
+
+                couldParseArticlePrice = decimal.TryParse(textBoxArticlePrice.Text, out parsedArticlePrice);
+
+                if (couldParseArticlePrice == false || couldParseArticleNumber == false)
                 {
-                    labelStatus.Content = "Status: Link erfolgreich hinzugefügt.";
+                    labelStatus.Content = "Status: Bitte gültige Werte eingeben!";
+                    return;
                 }
-                else
+
+                TagData tagData = new TagData(textBoxChipNumber.Text, DateTime.Now, textBoxChipData.Text);
+                ArticleData articleData = new ArticleData();
+
+                articleData.Id = parsedArticleNumber;
+                articleData.Name = textBoxArticleName.Text;
+                articleData.Cost = parsedArticlePrice;
+                articleData.Note = textBoxArticleNote.Text;
+
+                if (_tagDb.IsConnected())
                 {
-                    labelStatus.Content = "Status: Link konnte nicht hinzugefügt werden!";
+                    if (_tagDb.CreateLink(tagData, articleData))
+                    {
+                        labelStatus.Content = "Status: Link erfolgreich hinzugefügt.";
+                    }
+                    else
+                    {
+                        labelStatus.Content = "Status: Link konnte nicht hinzugefügt werden!";
+                    }
                 }
             }
+            catch (Exception exception)
+            {
+                Logger.GetInstance().Log("--Exception caught in CW: " + exception.Message);
+            }
+            
         }
 
         // Event called when closing the window

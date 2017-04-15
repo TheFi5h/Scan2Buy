@@ -106,6 +106,8 @@ namespace Domain
 
         public bool CreateLink(TagData tagData, ArticleData articleData)
         {
+            Logger.GetInstance().Log("TDB: Initialising Link creation");
+
             bool returnValue = false;
 
             // Check if a conenction is open
