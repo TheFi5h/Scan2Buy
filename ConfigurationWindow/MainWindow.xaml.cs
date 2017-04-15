@@ -148,15 +148,26 @@ namespace ConfigurationWindow
 
         private void buttonDeleteLink_Click(object sender, RoutedEventArgs e)
         {
+            int parsedTagId = 0;
+
             // Check for db connection
             if (!tagDb.IsConnected())
                 return;
+
+            // Try parsing the text to an int
+            if (!Int32.TryParse(textBoxChipNumber.Text, out parsedTagId))
+            {
+                // If parsing not successful
+                labelStatus.Content = "Status: Bitte gültige Id eingeben!";
+                return;
+            }
+                
 
             // Check if field is set
             if (textBoxChipNumber.Text != "")
             {
                 // Delete the entry with the given chip number
-                if (tagDb.DeleteLink(new TagData(textBoxChipNumber.Text, DateTime.Now, "")))
+                if (tagDb.DeleteLink(parsedTagId))
                 {
                     // Tag could be deleted
                     labelStatus.Content = "Status: Link erfolgreich gelöscht.";
