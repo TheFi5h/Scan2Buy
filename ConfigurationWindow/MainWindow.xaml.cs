@@ -213,7 +213,7 @@ namespace ConfigurationWindow
                 _tagDb.Disconnect();
 
             //Disconnect reader
-            _reader.Disconnect();
+            _reader?.Disconnect();
         }
     }
 
