@@ -53,10 +53,10 @@ namespace s2b_core_wpf
             // Update table
             _entries = (ReadOnlyCollection<ShoppingCartEntry>)_shoppingCart.GetEntries();   // readonly list of all entries in the cart
 
-            // Update grid
             Logger.GetInstance().Log($"App: {_entries.Count} new Tags scanned.");
-            // TODO needed?
-            DataGridEntries.ItemsSource = _entries;
+            
+            // Update grid
+            DataGridEntries.Items.Refresh();
         }
 
         private void buttonExit_Click(object sender, RoutedEventArgs e)
@@ -66,15 +66,12 @@ namespace s2b_core_wpf
 
         private void DataGridEntries_OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Get items (probably still none)
-            var items = _shoppingCart.GetEntries();
-
             var grid = sender as DataGrid;
 
             if (grid != null)
             {
                 // Set items source
-                grid.ItemsSource = items;
+                grid.ItemsSource = _entries;
             }
         }
     }
