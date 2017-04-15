@@ -122,6 +122,13 @@ namespace s2b_core_wpf
 
             // Clear the shopping cart
             _shoppingCart.Clear();
+
+            // Reset data grid
+            DataGridEntries.Items.Clear();
+
+            LabelArticleCountVar.Content = "0";
+            LabelPriceVar.Content = "0.00€";
+
         }
     }
 }
