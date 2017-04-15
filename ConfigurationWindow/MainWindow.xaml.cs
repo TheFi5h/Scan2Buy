@@ -32,6 +32,9 @@ namespace ConfigurationWindow
 
             Logger.GetInstance().Log("CW: Connected to database.");
 
+            // Set items source for grid
+            dataGridSearch.ItemsSource = SearchEntries;
+
             // Set up reader communicator
             /*
             var reader = ReaderCommunicator.GetInstance();
@@ -111,7 +114,7 @@ namespace ConfigurationWindow
             }
 
             //Update data grid
-            dataGridSearch.ItemsSource = SearchEntries;
+            dataGridSearch.Items.Refresh();
 
             // Set status label
             if (articleFound)
