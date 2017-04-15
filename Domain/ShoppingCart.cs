@@ -62,21 +62,29 @@ namespace Domain
 
         public void HandleNewTag(TagData tagData)
         {
-            // Only add if not already in list of scanned tags
-            if (_tagsInCart.Contains(tagData.Id))
-                return;
-            
-            // Add it to the list of scanned tags
-            _tagsInCart.Add(tagData.Id);
+            try
+            {
+                // Only add if not already in list of scanned tags
+                if (_tagsInCart.Contains(tagData.Id))
+                    return;
 
-            // Search for item with id in db
-            ArticleData newArticle = _db.GetArticleDataByTagData(tagData);
+                // Add it to the list of scanned tags
+                _tagsInCart.Add(tagData.Id);
 
-            // Check null
-            if (newArticle == null)
-                return;
+                // Search for item with id in db
+                ArticleData newArticle = _db.GetArticleDataByTagData(tagData);
 
-           AddToCart(new ShoppingCartEntry(newArticle.Name, newArticle.Id, 1, newArticle.Cost));     // add scanned item to cart
+                // Check null
+                if (newArticle == null)
+                    return;
+
+                AddToCart(new ShoppingCartEntry(newArticle.Name, newArticle.Id, 1,
+                    newArticle.Cost)); // add scanned item to cart
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in SC: " + e.Message);
+            }
         }
 
         // Sums up all prices for the items
@@ -129,20 +137,29 @@ namespace Domain
         // Add 1 item to the cart (increase amount if article is already inside or 
         private void AddToCart(ShoppingCartEntry newEntry)
         {
-            // Search in _listArticles, if article is already in the cart
-            foreach (var item in _listArticles)
+            try
             {
-                if (item.GetArticleNumber() == newEntry.GetArticleNumber())
+                // Search in _listArticles, if article is already in the cart
+                foreach (var item in _listArticles)
                 {
-                    item.AddOne();  // If found, add one item (automatically recalculates the price too)
-                    OnEntryChanged(new NewEntryEventArgs(NewEntryEventArgs.ShoppingCartAction.Add, newEntry));  // Trigger event
-                    Logger.GetInstance().Log($"Amount changed for '{item.GetArticleNumber()}'");
-                    return;
+                    if (item.GetArticleNumber() == newEntry.GetArticleNumber())
+                    {
+                        item.AddOne(); // If found, add one item (automatically recalculates the price too)
+                        OnEntryChanged(
+                            new NewEntryEventArgs(NewEntryEventArgs.ShoppingCartAction.Add, newEntry)); // Trigger event
+                        Logger.GetInstance().Log($"Amount changed for '{item.GetArticleNumber()}'");
+                        return;
+                    }
                 }
-            }
 
-            _listArticles.Add(newEntry);
-            OnEntryChanged(new NewEntryEventArgs(NewEntryEventArgs.ShoppingCartAction.Add, newEntry));  // Trigger event
+                _listArticles.Add(newEntry);
+                OnEntryChanged(new NewEntryEventArgs(NewEntryEventArgs.ShoppingCartAction.Add,
+                    newEntry)); // Trigger event
+            }
+            catch (Exception e)
+            {
+                Logger.GetInstance().Log("--Exception caught in SC: " + e.Message);
+            }
         }
 
         // Reduces the amount of the given item by one or deletes the last remaining one from the cart
