@@ -191,8 +191,6 @@ namespace Domain
                 {
                     var tagList = _reader.TagInventory(true, 0x00, 1);
 
-                    Logger.GetInstance().Log("SC: Tagged Inventory");
-
                     if (tagList.Count > 0)
                     {
                         Logger.GetInstance().Log($"tagList.Count = {tagList.Count}");
@@ -224,13 +222,12 @@ namespace Domain
                             }
                         }
 
-                        System.Threading.Thread.Sleep(100); // if tags could have been found, wait for 100 ms // TODO maybe switch with event based waking up
+                        System.Threading.Thread.Sleep(100); // if tags could have been found, wait for 100 ms
 
                     }
                     else
                     {
-                        Logger.GetInstance().Log("SC: No Tags received");
-                        System.Threading.Thread.Sleep(200); // if no tags could have been found, wait for 200 ms // TODO maybe switch with event based waking up
+                        System.Threading.Thread.Sleep(200); // if no tags could have been found, wait for 200 ms
                     }
                 }
                 catch (Exception e)
@@ -243,10 +240,7 @@ namespace Domain
         private void OnNewTagScanned(TagData scannedTag)
         {
             // Trigger event if the handler isnt null (if there are subscribers)
-            if(NewTagScanned != null)
-            {
-                NewTagScanned(scannedTag);
-            }
+            NewTagScanned?.Invoke(scannedTag);
         }
 
         private TagData FormatTagHandlerToTagData(FedmIscTagHandler_ISO15693 tag)
