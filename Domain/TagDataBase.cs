@@ -135,14 +135,14 @@ namespace Domain
             return returnValue;
         }
 
-        public bool DeleteLink(TagData tagData)
+        public bool DeleteLink(int tagDataId)
         {
             bool returnValue = false;
             if (!_hasOpenedConnection)
                 return false;
 
             // Create query
-            string query = $"DELETE FROM links WHERE tag_id={tagData.Id}";
+            string query = $"DELETE FROM links WHERE tag_id={tagDataId}";
 
             Logger.GetInstance().Log("DB: Deleting link");
 
@@ -160,14 +160,14 @@ namespace Domain
             return returnValue;
     }
 
-        public bool DeleteLinks(ArticleData articleData)
+        public bool DeleteLinks(int articleDataId)
         {
             bool returnValue = false;
             if (!_hasOpenedConnection)
                 return false;
 
             // Create query
-            string query = $"DELETE FROM links WHERE article_id={articleData.Id}";
+            string query = $"DELETE FROM links WHERE article_id={articleDataId}";
 
             // Create and execute query
             try

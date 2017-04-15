@@ -120,6 +120,9 @@ namespace ConfigurationWindow
                     else
                     {
                         labelStatus.Content = "Status: Artikel gefunden.";
+
+                        //DEBUG
+                        Logger.GetInstance().Log($"CW: Article received: {articleFromDb.Id}, {articleFromDb.Name}, {articleFromDb.Cost}, {articleFromDb.Note}");
                     }
                 }
                 else
