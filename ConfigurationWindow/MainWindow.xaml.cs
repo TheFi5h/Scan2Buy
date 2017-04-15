@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using DataAccess;
@@ -14,7 +15,9 @@ namespace ConfigurationWindow
     {
         public List<SearchEntry> SearchEntries = new List<SearchEntry>();
 
-        private readonly ITagDataBase tagDb = new TagDataBase();
+        private readonly ITagDataBase _tagDb = new TagDataBase();
+
+        private IReaderCommunicator _reader = null;
 
         private delegate void SetFields(TagData tagData);
 
@@ -25,7 +28,7 @@ namespace ConfigurationWindow
             Logger.GetInstance().Log("CW: Connecting to database.");
 
             // Set up connection to database
-            tagDb.Connect();
+            _tagDb.Connect();
 
             Logger.GetInstance().Log("CW: Connected to database.");
 
@@ -63,7 +66,7 @@ namespace ConfigurationWindow
             bool articleFound = false;
 
             // Check for db conntection
-            if (!tagDb.IsConnected())
+            if (!_tagDb.IsConnected())
                 return;
 
             // Clear previous search entries
@@ -82,7 +85,7 @@ namespace ConfigurationWindow
                 }
 
                 // Search by chip number
-                ArticleData articleFromDb = tagDb.GetArticleDataByTagData(parsedNumber);
+                ArticleData articleFromDb = _tagDb.GetArticleDataByTagData(parsedNumber);
 
                 // Check return value
                 if (articleFromDb != null)
@@ -94,7 +97,7 @@ namespace ConfigurationWindow
                 }
 
                 // Search by article number
-                List<TagData> tagsFromDb = tagDb.GetTagDataByArticleData(parsedNumber);
+                List<TagData> tagsFromDb = _tagDb.GetTagDataByArticleData(parsedNumber);
 
                 // Check return value
                 if (tagsFromDb.Count >= 1)
@@ -151,7 +154,7 @@ namespace ConfigurationWindow
             int parsedTagId = 0;
 
             // Check for db connection
-            if (!tagDb.IsConnected())
+            if (!_tagDb.IsConnected())
                 return;
 
             // Try parsing the text to an int
@@ -167,7 +170,7 @@ namespace ConfigurationWindow
             if (textBoxChipNumber.Text != "")
             {
                 // Delete the entry with the given chip number
-                if (tagDb.DeleteLink(parsedTagId))
+                if (_tagDb.DeleteLink(parsedTagId))
                 {
                     // Tag could be deleted
                     labelStatus.Content = "Status: Link erfolgreich gelöscht.";
@@ -188,9 +191,9 @@ namespace ConfigurationWindow
             articleData.Cost = Convert.ToDecimal(textBoxArticlePrice.Text);
             articleData.Note = textBoxArticleNote.Text;
 
-            if (tagDb.IsConnected())
+            if (_tagDb.IsConnected())
             {
-                if (tagDb.CreateLink(tagData, articleData))
+                if (_tagDb.CreateLink(tagData, articleData))
                 {
                     labelStatus.Content = "Status: Link erfolgreich hinzugefügt.";
                 }
@@ -199,6 +202,11 @@ namespace ConfigurationWindow
                     labelStatus.Content = "Status: Link konnte nicht hinzugefügt werden!";
                 }
             }
+        }
+
+        private void ConfigurationWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            
         }
     }
 

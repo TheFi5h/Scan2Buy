@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ConfigurationWindow"
         xmlns:Properties="clr-namespace:ConfigurationWindow.Properties" x:Name="Datenbank_Konfiguratior" x:Class="ConfigurationWindow.MainWindow"
         mc:Ignorable="d"
-        Title="Datenbank Management" Height="563.657" Width="811.939">
+        Title="Datenbank Management" Height="563.657" Width="811.939"
+        Closing="ConfigurationWindow_OnClosing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="259*"/>
