@@ -78,7 +78,7 @@ namespace s2b_core_wpf
                     Entries.Add(entry);
                 }
 
-                Logger.GetInstance().Log("SCG: Entries added");
+                Logger.GetInstance().Log($"SCG: Entries added. {Entries.Count} items in list");
 
                 // Call a delegate in this thread to set the values of the controls accordingly
                 await LabelArticleCountVar.Dispatcher.BeginInvoke(new SetFields(SetControls), e);
